@@ -15,7 +15,7 @@ namespace SchoolBus
 
             string database = "SchoolBus";
             string username = "sa";
-            string password = "***";
+            string password = "htpvtkn4878856";
 
             return DBSQLServerUtils.GetDBConnection(datasource, database, username, password);
         }

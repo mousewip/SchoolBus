@@ -44,11 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bus.cs" />
-    <Compile Include="DBSQLServerUtils.cs" />
-    <Compile Include="DBUtils.cs" />
+    <Compile Include="ReadDatabase.cs" />
+    <Compile Include="ReadFromFile.cs" />
+    <Compile Include="SQL\DBSQLServerUtils.cs" />
+    <Compile Include="SQL\DBUtils.cs" />
     <Compile Include="Distance.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQL\InsertData.cs" />
+    <Compile Include="SQL\QueryData.cs" />
     <Compile Include="Stations.cs" />
     <Compile Include="XuLy.cs" />
   </ItemGroup>

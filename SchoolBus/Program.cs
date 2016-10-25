@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolBus.SQL;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,21 +12,9 @@ namespace SchoolBus
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Getting Connection ...");
-            SqlConnection conn = DBUtils.GetDBConnection();
-
-            try
-            {
-                Console.WriteLine("Openning Connection ...");
-
-                conn.Open();
-
-                Console.WriteLine("Connection successful!");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: " + e.Message);
-            }
+            ReadFromFile rff = new ReadFromFile();
+            ReadFromFile.ReadData();
+            InsertData.PutAllTableToDatabase(rff.Bus, rff.Station, rff.Distance);
 
 
             XuLy xl = new XuLy();

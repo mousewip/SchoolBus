@@ -10,6 +10,12 @@ namespace SchoolBus
     {
         private int id;
         private int soSV;
+
+        private double lat;
+        private double lon;
+
+
+
         private bool status;
         public int Id
         {
@@ -27,6 +33,18 @@ namespace SchoolBus
         {
             get { return status; }
             set { status = value; }
+        }
+
+        public double Lat
+        {
+            get { return lat; }
+            set { lat = value; }
+        }
+
+        public double Lon
+        {
+            get { return lon; }
+            set { lon = value; }
         }
     }
 }
