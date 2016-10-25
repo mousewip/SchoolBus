@@ -31,9 +31,6 @@ namespace SchoolBus
             set { totalTime = value; }
         }
 
-
-
-
         List<Bus> bus = new List<Bus>();
         List<Stations> station = new List<Stations>();
         Distance[,] distance = new Distance[maxNode, maxNode];
@@ -144,7 +141,7 @@ namespace SchoolBus
         {
             quicksort(dis, 0, dis.Count - 1);
         }
-
+        // lấy trạm xa nhất
         public int getLongNode()
         {
             int range = 0;
@@ -159,7 +156,7 @@ namespace SchoolBus
             }
             return node;
         }
-
+        // lấy tất cả các trạm kề với trạm đang xét
         public List<int> getAllNearNode()
         {
             List<int> t = new List<int>();
@@ -174,7 +171,7 @@ namespace SchoolBus
             return t;
         }
 
-
+        // lấy trạm gần với trạm đang xét nhất
         public int getNearNode(List<int> allNode)
         {
             int node = -1;
@@ -202,7 +199,7 @@ namespace SchoolBus
                 sv += i.SoSV;
             return sv;
         }
-
+        // xem kết quả sau khi tính đường đi
         public void show(Dictionary<Bus, List<int>> trace)
         {
             Console.WriteLine("Tong so tuyen: " + trace.Count);
@@ -329,7 +326,7 @@ namespace SchoolBus
 
         //}
 
-
+        // hàn thực thi tính đường đi
         public void run2()
         {
             while (getLongNode() != -1)
@@ -372,14 +369,14 @@ namespace SchoolBus
                 Console.WriteLine(t +"\n");
         }
 
-
+        // set true = trạm đó không thể đi qua nữa
         public void setTrueStation(int tramHienTai)
         {
             // status = true tuc la tram do se khong di qua nua
             station[tramHienTai].Status = true;
         }
 
-
+        // hàm đón sv ở mỗi trạm nó đi qua
         public void donSV(int SLSV)
         {
             if (SLSV <= bus[busHienTai].Seat)
@@ -395,7 +392,7 @@ namespace SchoolBus
                 bus[busHienTai].Seat = 0;
             }
         }
-
+        // hàm xử lí khi được phép đi qua trạm kế tiếp
         public void quaTram()
         {
             tgMoiTuyen -= distance[tramHienTai, tramTiepTheo].Time;
@@ -407,19 +404,19 @@ namespace SchoolBus
         }
 
 
-
+        // tính thời gian từ trạm đang xét -> trạm kế -> về trường
         int timeToSchool()
         {
             return distance[tramHienTai, tramTiepTheo].Time + distance[tramTiepTheo, 0].Time;
         }
-
+        // xử lí khi không qua được trạm kế
         public void veTruong()
         {
             tgMoiTuyen -= distance[tramHienTai, 0].Time;
             tgQuaTram = distance[tramHienTai, 0].Time;
             donSV(station[tramHienTai].SoSV);
         }
-
+        // số ghế trên xe bus hiện tại đã đầy
         public bool isFullSeat()
         {
             //con ghe = false, het ghe = true
@@ -427,7 +424,7 @@ namespace SchoolBus
             else return false;
         }
 
-
+        // tìm trạm kế tiếp gần nhất cảu trạm đang xét
         public int tramKeTiep()
         {
             List<int> cacTramCoTheDen = getAllNearNode();
@@ -440,7 +437,7 @@ namespace SchoolBus
                 return -1;
     
         }
-
+        // kiểm tra xem có qua trạm kế tiếp được hay không
         public bool isQuaTramKe()
         {
             //return -1 if not exists
