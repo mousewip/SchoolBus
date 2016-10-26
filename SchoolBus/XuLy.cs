@@ -1,4 +1,5 @@
 ﻿using System;
+using SchoolBus.SQL;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -10,13 +11,8 @@ namespace SchoolBus
 {
     class XuLy
     {
-        static int maxNode = 42;
-        //public int MaxNode
-        //{
-        //    get { return maxNode; }
-        //    set { maxNode = value; }
-        //}
 
+       
         private int totalTime;
         private int tramHienTai = 0;
         private int tgMoiTuyen = 0;
@@ -31,9 +27,15 @@ namespace SchoolBus
             set { totalTime = value; }
         }
 
-        List<Bus> bus = new List<Bus>();
-        List<Stations> station = new List<Stations>();
-        Distance[,] distance = new Distance[maxNode, maxNode];
+        static Variable allVar = ReadDatabase.ConnectData();
+        private static ReadDatabase db = new ReadDatabase();
+        static List<Bus> bus = allVar.Bus;
+        static List<Stations> station = allVar.Station;
+        static Distance[,] distance = allVar.Distance;
+        private static int maxNode  = allVar.MaxNode;
+        //List<Bus> bus = new List<Bus>();
+        //List<Stations> station = new List<Stations>();
+        //Distance[,] distance = new Distance[maxNode, maxNode];
         Dictionary<Bus, List<int>> trace = new Dictionary<Bus, List<int>>();
         List<string> loTrinh = new List<string>();
         string fileBus = "buses.txt", fileStation = "station.txt", fileDistance = "distance.txt";
@@ -50,10 +52,6 @@ namespace SchoolBus
                 t.Seat = int.Parse(pt[1]);
                 bus.Add(t);
             }
-            //foreach (Bus b in bus)
-            //{
-            //    Console.WriteLine(b.Id + " " + b.Seat);
-            //}
             Array.Clear(kq, 0, kq.Length);
 
             // read data from station.txt
@@ -97,13 +95,29 @@ namespace SchoolBus
                 }
             }
             Console.WriteLine("Read all file successful");
+        }
 
-            //for (int i = 0; i < maxNode; i++)
-            //{
-            //    for (int j = 0; j < maxNode; j++)
-            //        Console.WriteLine(distance[i, j].KhoanCach + " " + distance[i, j].Time);
-            //    Console.WriteLine();
-            //}
+
+        public void xemThuCacMang()
+        {
+            foreach (var p in bus)
+            {
+                Console.WriteLine(p.Id + "   " + p.Seat);
+            }
+            Console.WriteLine("===================================================");
+
+            foreach (var p in station)
+            {
+                Console.WriteLine(p.Id + "   " + p.SoSV + "   " + p.Status);
+            }
+            Console.WriteLine("===================================================");
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                    Console.WriteLine(distance[i, j].KhoanCach);
+                Console.WriteLine();
+            }
         }
 
 
@@ -220,6 +234,8 @@ namespace SchoolBus
         // hàn thực thi tính đường đi
         public void run2()
         {
+            //ReadData();
+    
             while (getLongNode() != -1)
             {
                 tramHienTai = getLongNode();
@@ -251,7 +267,9 @@ namespace SchoolBus
                 busHienTai++;
                 flags = true;
             }
+            Console.WriteLine();
             display(loTrinh);
+            Console.ReadKey();
         }
 
         public void display(List<string> lt)

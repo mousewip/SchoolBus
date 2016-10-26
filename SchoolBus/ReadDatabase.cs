@@ -11,17 +11,22 @@ namespace SchoolBus
     class ReadDatabase
     {
 
-        public static void ConnectData()
+        public static Variable ConnectData()
         {
+            Variable item = new Variable();
             // Lấy ra đối tượng Connection kết nối vào DB.
             SqlConnection conn = DBUtils.GetDBConnection();
-            
+            Console.WriteLine("Open connection...");
+
             conn.Open();
             try
             {
-                QueryData.QueryBus(conn);
-                QueryData.QueryStationS(conn);
-                QueryData.QueryDistance(conn);
+                Console.WriteLine("Open connection success");
+                item.Bus = QueryData.QueryBus(conn);
+                item.Station = QueryData.QueryStationS(conn);
+                item.Distance = QueryData.QueryDistance(conn);
+                item.MaxNode = QueryData.MaxValue;
+                Console.WriteLine("Read data from database success");
             }
             catch (Exception e)
             {
@@ -35,9 +40,7 @@ namespace SchoolBus
                 // Hủy đối tượng, giải phóng tài nguyên.
                 conn.Dispose();
             }
-            Console.Read();
+            return item;
         }
-
     }
-        
 }

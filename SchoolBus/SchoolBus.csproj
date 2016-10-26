@@ -54,6 +54,7 @@
     <Compile Include="SQL\InsertData.cs" />
     <Compile Include="SQL\QueryData.cs" />
     <Compile Include="Stations.cs" />
+    <Compile Include="Variable.cs" />
     <Compile Include="XuLy.cs" />
   </ItemGroup>
   <ItemGroup>

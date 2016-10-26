@@ -116,10 +116,6 @@ namespace SchoolBus.SQL
                 connection.Dispose();
                 connection = null;
             }
-
-
-            Console.Read();
-
         }
 
         //=============================================================
@@ -165,10 +161,6 @@ namespace SchoolBus.SQL
                 connection.Dispose();
                 connection = null;
             }
-
-
-            Console.Read();
-
         }
 
     }
