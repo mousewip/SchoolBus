@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 
 namespace SchoolBus
 {
@@ -11,6 +6,9 @@ namespace SchoolBus
     {
         public static SqlConnection GetDBConnection()
         {
+            //workstation id=SchoolBus.mssql.somee.com;packet size=4096;
+            //user id=mousewip_SQLLogin_1;pwd=79cgxexkw1;data source=SchoolBus.mssql.somee.com;
+            //persist security info=False;initial catalog=SchoolBus
             string datasource = @"MOUSEWIP";
 
             string database = "SchoolBus";

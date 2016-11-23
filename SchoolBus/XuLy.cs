@@ -1,18 +1,10 @@
 ﻿using System;
-using SchoolBus.SQL;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolBus
 {
     class XuLy
     {
-
-       
         private int totalTime;
         private int tramHienTai = 0;
         private int tgMoiTuyen = 0;
@@ -28,75 +20,13 @@ namespace SchoolBus
         }
 
         static Variable allVar = ReadDatabase.ConnectData();
-        private static ReadDatabase db = new ReadDatabase();
         static List<Bus> bus = allVar.Bus;
         static List<Stations> station = allVar.Station;
         static Distance[,] distance = allVar.Distance;
         private static int maxNode  = allVar.MaxNode;
-        //List<Bus> bus = new List<Bus>();
-        //List<Stations> station = new List<Stations>();
-        //Distance[,] distance = new Distance[maxNode, maxNode];
+    
         Dictionary<Bus, List<int>> trace = new Dictionary<Bus, List<int>>();
         List<string> loTrinh = new List<string>();
-        string fileBus = "buses.txt", fileStation = "station.txt", fileDistance = "distance.txt";
-        string DuongDan = @"D:\IDE\CSharp\SchoolBus\SchoolBus\data\";
-        public void ReadData()
-        {
-            // read data from file Buses.txt
-            string[] kq = File.ReadAllLines(DuongDan + fileBus);
-            foreach (var s in kq)
-            {
-                Bus t = new Bus();
-                string[] pt = s.Split('\t');
-                t.Id = int.Parse(pt[0]);
-                t.Seat = int.Parse(pt[1]);
-                bus.Add(t);
-            }
-            Array.Clear(kq, 0, kq.Length);
-
-            // read data from station.txt
-            kq = File.ReadAllLines(DuongDan + fileStation);
-            foreach (var s in kq)
-            {
-                Stations t = new Stations();
-                string[] pt = s.Split('\t');
-                t.Id = int.Parse(pt[0]);
-                t.SoSV = int.Parse(pt[3]);
-                t.Status = false;
-                station.Add(t);
-            }
-            Array.Clear(kq, 0, kq.Length);
-
-            // read data from distance.txt
-
-            kq = File.ReadAllLines(DuongDan + fileDistance);
-
-            int row = 0, col = 0;
-            foreach (var s in kq)
-            {
-                Distance dis = new Distance();
-                string[] pt = s.Split('\t');
-                dis.KhoanCach = int.Parse(pt[0]);
-                dis.Time = int.Parse(pt[1]);
-                if (row < maxNode)
-                {
-                    if (col < maxNode)
-                    {
-                        distance[row, col] = dis;
-                        col++;
-                    }
-                    else
-                    {
-                        row++;
-                        col = 0;
-                        distance[row, col] = dis;
-                        col++;
-                    }
-                }
-            }
-            Console.WriteLine("Read all file successful");
-        }
-
 
         public void xemThuCacMang()
         {
@@ -120,41 +50,6 @@ namespace SchoolBus
             }
         }
 
-
-        private void quicksort(List<Distance> t, int left, int right)
-        {
-            int i = left, j = right;
-            Distance tmp;
-            int pivot = t[(left + right) / 2].KhoanCach;
-
-            /* partition */
-            while (i <= j)
-            {
-                while (t[i].KhoanCach < pivot)
-                    i++;
-                while (t[j].KhoanCach > pivot)
-                    j--;
-                if (i <= j)
-                {
-                    tmp = t[i];
-                    t[i] = t[j];
-                    t[j] = tmp;
-                    i++;
-                    j--;
-                }
-            };
-
-            /* recursion */
-            if (left < j)
-                quicksort(t, left, j);
-            if (i < right)
-                quicksort(t, i, right);
-        }
-
-        public void sortNearNode(List<Distance> dis)
-        {
-            quicksort(dis, 0, dis.Count - 1);
-        }
         // lấy trạm xa nhất
         public int getLongNode()
         {
@@ -162,7 +57,7 @@ namespace SchoolBus
             int node = -1;
             for (int i = 1; i < maxNode; i++)
             {
-                if (range <= distance[0, i].KhoanCach && station[i].Status == false && i!= tramHienTai)
+                if (range <= distance[0, i].KhoanCach && station[i].Status == false )
                 {
                     range = distance[0, i].KhoanCach;
                     node = i;
@@ -206,13 +101,7 @@ namespace SchoolBus
             else return node;
            
         }
-        public int calcTotalSV()
-        {
-            int sv = 0;
-            foreach (var i in station)
-                sv += i.SoSV;
-            return sv;
-        }
+      
         // xem kết quả sau khi tính đường đi
         public void show(Dictionary<Bus, List<int>> trace)
         {
@@ -231,19 +120,15 @@ namespace SchoolBus
 
 
 
-        // hàn thực thi tính đường đi
+        // hàm thực thi tính đường đi
         public void run2()
         {
             //ReadData();
-    
             while (getLongNode() != -1)
             {
                 tramHienTai = getLongNode();
                 tgMoiTuyen = TotalTime;
-
                 string temp = bus[busHienTai].Id.ToString() + " : ";
-           
-          
                 while (flags == true && isFullSeat() == false)
                 {
                     tramTiepTheo = tramKeTiep();
@@ -311,8 +196,7 @@ namespace SchoolBus
             tramHienTai = tramTiepTheo;
             tramTiepTheo = tramKeTiep();
         }
-
-
+        
         // tính thời gian từ trạm đang xét -> trạm kế -> về trường
         int timeToSchool()
         {
